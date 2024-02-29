@@ -17,16 +17,12 @@ public class AlunoDao {
         this.em.persist(aluno);
     }
 
-    public Aluno getById(Long id) {
-        return em.find(Aluno.class, id);
-    }
-
     public List<Aluno> getAll() {
         String jpql = "SELECT a FROM aluno a";
         return em.createQuery(jpql, Aluno.class).getResultList();
     }
 
-    public List<Aluno> getByName(String nome) {
+    public List<Aluno> getByName(String nome) throws NoResultException {
         String jpql = "SELECT a FROM aluno a WHERE a.nome = ?nome";
         return em.createQuery(jpql, Aluno.class)
                 .setParameter("nome", nome)
