@@ -1,4 +1,4 @@
-package org.example;
+package br.edu.ifsp.isaacnwt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
