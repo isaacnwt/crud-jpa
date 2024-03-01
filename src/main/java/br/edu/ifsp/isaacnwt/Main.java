@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 @SpringBootApplication
@@ -39,7 +40,7 @@ public class Main {
                 case 2 -> System.out.println("** Excluir aluno **");
                 case 3 -> System.out.println("** Alterar aluno **");
                 case 4 -> System.out.println("** Buscar aluno **");
-                case 5 -> System.out.println("** Listar alunos **");
+                case 5 -> showAll();
                 case 6 -> System.exit(0);
                 default -> System.out.println("Opção inválida!");
             }
@@ -84,5 +85,29 @@ public class Main {
         em.close();
 
         System.out.println("\nAluno cadastrado com sucesso!");
+    }
+
+    public static void showAll() {
+        System.out.println("** LISTAGEM DE ALUNOS **");
+        System.out.println("-----------------------");
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        AlunoDao alunoDao = new AlunoDao(em);
+
+        em.getTransaction().begin();
+
+        List<Aluno> alunos = alunoDao.getAll();
+
+        em.getTransaction().commit();
+        em.close();
+
+        if (alunos.isEmpty()) {
+            System.out.println("\nNenhum aluno registrado!");
+            return;
+        }
+
+        for (Aluno aluno : alunos)
+            System.out.println("\n" + aluno);
     }
 }

@@ -18,12 +18,12 @@ public class AlunoDao {
     }
 
     public List<Aluno> getAll() {
-        String jpql = "SELECT a FROM aluno a";
+        String jpql = "SELECT a FROM Aluno a";
         return em.createQuery(jpql, Aluno.class).getResultList();
     }
 
     public List<Aluno> getByName(String nome) throws NoResultException {
-        String jpql = "SELECT a FROM aluno a WHERE a.nome = ?nome";
+        String jpql = "SELECT a FROM Aluno a WHERE a.nome = ?nome";
         return em.createQuery(jpql, Aluno.class)
                 .setParameter("nome", nome)
                 .getResultList();

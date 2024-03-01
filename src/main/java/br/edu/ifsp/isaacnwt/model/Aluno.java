@@ -17,6 +17,8 @@ public class Aluno {
     private BigDecimal nota2;
     private BigDecimal nota3;
 
+    public Aluno() {}
+
     public Aluno(String nome, String ra, String email, BigDecimal nota1, BigDecimal nota2, BigDecimal nota3) {
         this.nome = nome;
         this.ra = ra;
@@ -76,5 +78,32 @@ public class Aluno {
 
     public void setNota3(BigDecimal nota3) {
         this.nota3 = nota3;
+    }
+
+    @Override
+    public String toString() {
+        double average = getAverage();
+        String status = getStatusByAverage(average);
+
+        return "Nome: " + nome + "\n" +
+                "RA: " + ra + "\n" +
+                "Email: " + email + "\n" +
+                "Notas: " + getNota1() + ", " + getNota2() + ", " + getNota3() + "\n" +
+                "Média: " + String.format("%.2f", average) + "\n" +
+                "Situação: " + status;
+    }
+
+    public double getAverage() {
+        return (nota1.doubleValue() + nota2.doubleValue() + nota3.doubleValue()) / 3;
+    }
+
+    private String getStatusByAverage(double media) {
+        if (media < 4) {
+            return "Reprovado";
+        } else if (media < 6) {
+            return "Recuperação";
+        } else {
+            return "Aprovado";
+        }
     }
 }
