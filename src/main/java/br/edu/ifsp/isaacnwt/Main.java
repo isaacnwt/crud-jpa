@@ -4,6 +4,7 @@ import br.edu.ifsp.isaacnwt.dao.AlunoDao;
 import br.edu.ifsp.isaacnwt.model.Aluno;
 import br.edu.ifsp.isaacnwt.util.JPAUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -39,7 +40,7 @@ public class Main {
                 case 1 -> registerNew();
                 case 2 -> System.out.println("** Excluir aluno **");
                 case 3 -> System.out.println("** Alterar aluno **");
-                case 4 -> System.out.println("** Buscar aluno **");
+                case 4 -> findByName();
                 case 5 -> showAll();
                 case 6 -> System.exit(0);
                 default -> System.out.println("Opção inválida!");
@@ -86,6 +87,31 @@ public class Main {
 
         System.out.println("\nAluno cadastrado com sucesso!");
     }
+
+    public static void findByName() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("** BUSCAR ALUNO POR NOME **");
+        System.out.println("-----------------------");
+
+        System.out.print("Digite o nome do aluno: ");
+        String nome = scanner.nextLine();
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        AlunoDao alunoDao = new AlunoDao(em);
+
+        try {
+            Aluno aluno = alunoDao.getByName(nome);
+            em.close();
+
+            System.out.println("\nAluno encontrado: \n" + aluno);
+        } catch (NoResultException e) {
+            System.out.println("\nAluno não encontrado!");
+        }
+    }
+
+
 
     public static void showAll() {
         System.out.println("** LISTAGEM DE ALUNOS **");

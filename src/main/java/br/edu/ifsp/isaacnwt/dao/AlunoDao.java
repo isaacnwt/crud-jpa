@@ -22,10 +22,10 @@ public class AlunoDao {
         return em.createQuery(jpql, Aluno.class).getResultList();
     }
 
-    public List<Aluno> getByName(String nome) throws NoResultException {
-        String jpql = "SELECT a FROM Aluno a WHERE a.nome = ?nome";
+    public Aluno getByName(String nome) throws NoResultException {
+        String jpql = "SELECT a FROM Aluno a WHERE a.nome = :nome";
         return em.createQuery(jpql, Aluno.class)
                 .setParameter("nome", nome)
-                .getResultList();
+                .getSingleResult();
     }
 }
