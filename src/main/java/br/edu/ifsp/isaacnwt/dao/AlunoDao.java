@@ -28,4 +28,11 @@ public class AlunoDao {
                 .setParameter("nome", nome)
                 .getSingleResult();
     }
+
+    public void deleteByName(String nome) {
+        String jpql = "DELETE FROM Aluno a WHERE a.nome = :nome";
+        em.createQuery(jpql)
+                .setParameter("nome", nome)
+                .executeUpdate();
+    }
 }
