@@ -38,7 +38,7 @@ public class Main {
 
             switch (opcao) {
                 case 1 -> registerNew();
-                case 2 -> System.out.println("** Excluir aluno **");
+                case 2 -> deleteByName();
                 case 3 -> System.out.println("** Alterar aluno **");
                 case 4 -> findByName();
                 case 5 -> showAll();
@@ -109,6 +109,36 @@ public class Main {
         } catch (NoResultException e) {
             System.out.println("\nAluno não encontrado!");
         }
+    }
+
+    public static void deleteByName() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("** EXCLUIR ALUNO POR NOME **");
+        System.out.println("-----------------------");
+
+        System.out.print("Digite o nome do aluno: ");
+        String nome = scanner.nextLine();
+
+        EntityManager em = JPAUtil.getEntityManager();
+        AlunoDao alunoDao = new AlunoDao(em);
+
+        try {
+            em.getTransaction().begin();
+
+            Aluno aluno = alunoDao.getByName(nome);
+            alunoDao.deleteByName(aluno.getNome());
+
+            em.getTransaction().commit();
+            System.out.println("\nAluno excluído com sucesso!");
+        } catch (NoResultException e) {
+            System.out.println("\nAluno não encontrado!");
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            System.out.println("\nErro ao excluir aluno!");
+        }
+
+        em.close();
     }
 
 
