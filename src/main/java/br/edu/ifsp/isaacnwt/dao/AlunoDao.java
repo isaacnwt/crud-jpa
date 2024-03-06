@@ -35,4 +35,8 @@ public class AlunoDao {
                 .setParameter("nome", nome)
                 .executeUpdate();
     }
+
+    public void update(Aluno aluno) {
+        em.merge(aluno);
+    }
 }

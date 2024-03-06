@@ -39,7 +39,7 @@ public class Main {
             switch (opcao) {
                 case 1 -> registerNew();
                 case 2 -> deleteByName();
-                case 3 -> System.out.println("** Alterar aluno **");
+                case 3 -> update();
                 case 4 -> findByName();
                 case 5 -> showAll();
                 case 6 -> System.exit(0);
@@ -51,7 +51,7 @@ public class Main {
     public static void registerNew() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("** CADASTRO DE ALUNO **");
+        System.out.println("\n** CADASTRO DE ALUNO **");
         System.out.println("-----------------------");
 
         System.out.print("Digite o nome: ");
@@ -91,7 +91,7 @@ public class Main {
     public static void findByName() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("** BUSCAR ALUNO POR NOME **");
+        System.out.println("\n** BUSCAR ALUNO POR NOME **");
         System.out.println("-----------------------");
 
         System.out.print("Digite o nome do aluno: ");
@@ -114,7 +114,7 @@ public class Main {
     public static void deleteByName() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("** EXCLUIR ALUNO POR NOME **");
+        System.out.println("\n** EXCLUIR ALUNO POR NOME **");
         System.out.println("-----------------------");
 
         System.out.print("Digite o nome do aluno: ");
@@ -141,10 +141,70 @@ public class Main {
         em.close();
     }
 
+    public static void update() {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.println("\n** ALTERAR ALUNO **");
+        System.out.println("-----------------------");
+        System.out.print("Digite o nome do aluno: ");
+        String nome = scanner.nextLine();
+
+        EntityManager em = JPAUtil.getEntityManager();
+        AlunoDao alunoDao = new AlunoDao(em);
+
+        Aluno aluno = null;
+        try {
+            aluno = alunoDao.getByName(nome);
+            System.out.println("\nAluno encontrado: \n" + aluno);
+        } catch (NoResultException e) {
+            System.out.println("\nAluno não encontrado!");
+        } catch (Exception e) {
+            System.out.println("\nErro ao excluir aluno!");
+        }
+
+        System.out.println("\nNOVOS DADOS:");
+        System.out.println("-----------------------");
+
+        System.out.print("Digite o nome: ");
+        String novoNome = scanner.nextLine();
+
+        System.out.print("Digite o RA: ");
+        String novoRa = scanner.nextLine();
+
+        System.out.print("Digite o email: ");
+        String novoEmail = scanner.nextLine();
+
+        System.out.print("Digite a nota 1: ");
+        BigDecimal nota1 = scanner.nextBigDecimal();
+
+        System.out.print("Digite a nota 2: ");
+        BigDecimal nota2 = scanner.nextBigDecimal();
+
+        System.out.print("Digite a nota 3: ");
+        BigDecimal nota3 = scanner.nextBigDecimal();
+
+
+        aluno.setNome(novoNome);
+        aluno.setRa(novoRa);
+        aluno.setEmail(novoEmail);
+        aluno.setNota1(nota1);
+        aluno.setNota2(nota2);
+        aluno.setNota3(nota3);
+
+        try {
+            em.getTransaction().begin();
+            alunoDao.update(aluno);
+            em.getTransaction().commit();
+            System.out.println("\nAluno alterado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("\nErro ao excluir aluno!");
+        }
+
+        em.close();
+    }
 
     public static void showAll() {
-        System.out.println("** LISTAGEM DE ALUNOS **");
+        System.out.println("\n** LISTAGEM DE ALUNOS **");
         System.out.println("-----------------------");
 
         EntityManager em = JPAUtil.getEntityManager();
